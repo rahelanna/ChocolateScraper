@@ -12,6 +12,11 @@ BOT_NAME = "chocolatescraper"
 SPIDER_MODULES = ["chocolatescraper.spiders"]
 NEWSPIDER_MODULE = "chocolatescraper.spiders"
 
+FEEDS = {
+    'data.csv': {'format': 'csv'},
+    'data.json': {'format': 'json'},
+    'data.xml': {'format': 'xml'}
+}
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = "chocolatescraper (+http://www.yourdomain.com)"
@@ -62,9 +67,12 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    "chocolatescraper.pipelines.ChocolatescraperPipeline": 300,
-#}
+ITEM_PIPELINES = {
+    "chocolatescraper.pipelines.PriceToUSDPipeline": 100,
+    "chocolatescraper.pipelines.DublicatesPipeline": 200,
+    "chocolatescraper.pipelines.SaveToMySQLPipeline": 300,
+
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
