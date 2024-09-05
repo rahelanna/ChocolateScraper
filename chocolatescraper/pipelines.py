@@ -8,6 +8,7 @@
 from itemadapter import ItemAdapter
 from scrapy.exceptions import DropItem
 import mysql.connector
+import psycopg2
 from dotenv import load_dotenv
 import os
 
@@ -69,6 +70,7 @@ class SaveToMySQLPipeline(object):
             url VARCHAR(255)
         )
         """)
+        self.conn.commit()
 
     def process_item(self, item, spider):
         self.store_db(item)
@@ -88,4 +90,48 @@ class SaveToMySQLPipeline(object):
             item["price"],
             item["url"]
         ))
+        self.conn.commit()
+
+
+class SaveToPostgresPipeline(object):
+
+    def __init__(self):
+        load_dotenv()
+        self.conn = psycopg2.connect(
+            host=os.getenv('hostname'),
+            user='postgres',
+            password=os.getenv('pgpassword'),
+            database=os.getenv('databasename'),
+            port=os.getenv('pgpost')
+        )
+
+        self.curr = self.conn.cursor()
+
+        self.curr.execute("""
+        CREATE TABLE IF NOT EXISTS chocolate_products(
+            id SERIAL PRIMARY KEY,
+            name text,
+            price DECIMAL,
+            url VARCHAR(255)
+        )
+        """)
+
+        self.conn.commit()
+
+    def process_item(self, item, spider):
+        self.store_db(item)
+        return item
+
+    def store_db(self, item):
+        try:
+            self.curr.execute(""" 
+            INSERT INTO chocolate_products (name, price, url)
+            VALUES(%s, %s, %s)
+            """, (
+                item["name"],
+                item["price"],
+                item["url"]
+            ))
+        except BaseException as e:
+            print(e)
         self.conn.commit()

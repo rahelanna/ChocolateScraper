@@ -22,7 +22,7 @@ FEEDS = {
 #USER_AGENT = "chocolatescraper (+http://www.yourdomain.com)"
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
@@ -55,9 +55,11 @@ ROBOTSTXT_OBEY = True
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
-#    "chocolatescraper.middlewares.ChocolatescraperDownloaderMiddleware": 543,
-#}
+DOWNLOADER_MIDDLEWARES = {
+   # "chocolatescraper.middlewares.ChocolatescraperDownloaderMiddleware": 543,
+     'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,
+     'scrapy_user_agents.middlewares.RandomUserAgentMiddleware': 400,
+}
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
@@ -70,7 +72,7 @@ ROBOTSTXT_OBEY = True
 ITEM_PIPELINES = {
     "chocolatescraper.pipelines.PriceToUSDPipeline": 100,
     "chocolatescraper.pipelines.DublicatesPipeline": 200,
-    "chocolatescraper.pipelines.SaveToMySQLPipeline": 300,
+    "chocolatescraper.pipelines.SaveToPostgresPipeline": 300,
 
 }
 
