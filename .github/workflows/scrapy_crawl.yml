@@ -50,7 +50,7 @@ jobs:
 
     - name: Run Scrapy spider
       env:
-        POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+        POSTGRES_USER: postgres
         POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
         POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
         POSTGRES_HOST: localhost

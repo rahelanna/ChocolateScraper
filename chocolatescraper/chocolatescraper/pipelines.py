@@ -99,7 +99,7 @@ class SaveToPostgresPipeline(object):
         load_dotenv()
         self.conn = psycopg2.connect(
             dbname= os.getenv('POSTGRES_DB'),
-            user= os.getenv('POSTGRES_USER'),
+            user= 'postgres',
             password= os.getenv('POSTGRES_PASSWORD'),
             host='localhost',
             port=5432
