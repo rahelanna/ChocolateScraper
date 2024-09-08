@@ -11,7 +11,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:latest
+        image: postgres
         env:
           POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
@@ -38,6 +38,18 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+
+    - name: Check running Docker containers
+      run: |
+        echo "Listing running Docker containers:"
+        docker ps -a
+        echo "Checking open ports:"
+        netstat -tuln
+
+    - name: Test PostgreSQL connection
+      run: |
+        python -c "import psycopg2; conn = psycopg2.connect(dbname='${{ secrets.POSTGRES_DB }}', user='${{ secrets.POSTGRES_USER }}', password='${{ secrets.POSTGRES_PASSWORD }}', host='localhost', port=5432); print('Connection successful')"
+
 
     - name: Run Scrapy spider
       env:
