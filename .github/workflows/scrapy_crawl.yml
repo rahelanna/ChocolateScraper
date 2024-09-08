@@ -49,7 +49,7 @@ jobs:
 
     - name: Test PostgreSQL connection
       run: |
-        python -c "import psycopg2; conn = psycopg2.connect(dbname='${{ secrets.POSTGRES_DB }}', user='${{ secrets.POSTGRES_USER }}', password='${{ secrets.POSTGRES_PASSWORD }}', host='localhost', port=5432); print('Connection successful')"
+        python -c "import psycopg2; conn = psycopg2.connect(dbname=${{ secrets.POSTGRES_DB }}, user=${{ secrets.POSTGRES_USER }}, password=${{ secrets.POSTGRES_PASSWORD }}, host='localhost', port=5432); print('Connection successful')"
 
 
     - name: Run Scrapy spider
