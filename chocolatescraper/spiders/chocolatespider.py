@@ -14,7 +14,7 @@ API_KEY = "a5d08dfe-d8f1-41ac-83e3-fa9bbfdfaef2"
 
 def get_proxy_url(url):
     payload = {'api_key': API_KEY, 'url': url}
-    proxy_url = 'http://api.scraperapi.com/?' + urlencode(payload)
+    proxy_url = 'https://proxy.scrapeops.io/v1/' + urlencode(payload)
     return proxy_url
 
 class ChocolatSpider(scrapy.Spider):
